@@ -1,0 +1,18 @@
+{
+    "name": "mfebriansyah/laravel-api-manager",
+    "description": "api manager for laravel",
+    "type": "library",
+    "keywords": ["laravel"],
+    "authors": [
+        {
+            "name": "muhammad febriansyah",
+            "email": "febri.init@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "MFebriansyah\\LaravelAPIManager\\": "packages/mfebriansyah/laravel-api-manager/src"
+        }
+    }
+}

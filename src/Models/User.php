@@ -1,0 +1,162 @@
+<?php
+
+namespace MFebriansyah\LaravelAPIManager\Models;
+
+class User extends MainModel
+{
+    /*
+    |--------------------------------------------------------------------------
+    | VARIABLES
+    |--------------------------------------------------------------------------
+    */
+
+    protected $table = 'users';
+    protected $hidden = ['password'];    
+    public $hide = [];
+    public $add = [];
+    public $rules = [];
+
+    /*
+    |--------------------------------------------------------------------------
+    | METHODS
+    |--------------------------------------------------------------------------
+    */
+
+    public function getUniqueId($uniqueId = 0, $field = 'unique_id')
+    {
+        if(!$uniqueId){
+            $count = $this->count();
+            $uniqueId = rand(0, 100).$count.($uniqueId+1).NOW;
+        }
+
+        $model = $this->where($field, $uniqueId)->count();
+
+        if($model > 0){
+            $this->getUniqueId($uniqueId);
+        }
+
+        return $uniqueId;
+    }
+
+    #POST
+
+    public function postLogIn()
+    {
+        $username = request()->input('username', request()->input('email'));
+        $password = request()->input('password');
+
+        $hide = array_diff($this->hide, ['auth_token']);
+
+        $model = $this->where('username', $username)
+            ->orWhere('email', $username)
+            ->first();
+
+        $model = ($model) ? $model->setHidden($hide) : $model;
+
+        $compare = false;
+
+        if($model){
+            $compare = self::compareHash($password, $model->password);
+        }else{
+            if($model){
+                $compare = true;
+            }
+        }
+
+        if($compare){
+            request()->session()->put('user', $model->toArray());
+            $model->last_login_at = TODAY_LABEL;
+            $model->auth_token = $this->getUniqueId(md5(NOW), 'auth_token');
+            $model->save();
+        }else{
+            $model = null;
+        }
+
+        return $model;
+    }
+
+    public function postLogOut()
+    {
+        $model = null;
+        $auth_token = request()->header('auth-token', request()->header('username'));
+
+        // for client (android and ios)
+        if ($auth_token) {
+
+            $member = User::where('auth_token', $auth_token)->first();
+
+            if ($member) {
+                $member->auth_token = null;
+                $member->save();
+            }
+        }
+
+        // for web version
+        if(request()->session()->has('user')){
+            $model = $this->find(request()->session()->get('user')['id']);
+            $model->auth_token = null;
+            $model->save();
+        }
+
+        request()->session()->forget('user');
+
+        return $model;
+    }
+
+    #LOG
+
+    public function getLogOnData()
+    {
+        $model = $this->getAPILogOnData();
+
+        if(!$model) {
+            $model = $this->getHTTPLogOnData();
+        }
+
+        return $model;
+    }
+
+    private function getHTTPLogOnData()
+    {
+        $user = null;
+
+        if (request()->session()->has('user')){
+            $user = request()->session()->get('user');
+            $user = User::find($user['id']);
+        }
+
+        return $user;
+    }
+
+    private function getAPILogOnData()
+    {
+        $auth_token = request()->header('auth-token');
+
+        $user = $this->where(\DB::raw('(
+                (username = "'.$auth_token.'" or email = "'.$auth_token.'")
+                or (auth_token = "'.$auth_token.'" and auth_token is not null)
+            )'), true)
+            ->first();
+
+        return $user;
+    }
+
+    private static function toHash($string, $random = null)
+    {
+        $random = ($random) ? $random : rand(10, 30);
+        $string = md5($string);
+        $start = md5(substr($string, 0, $random));
+        $end = md5(substr($string, $random, 99));
+        $hash = $random.$start.$end;
+
+        return $hash;
+    }
+
+    private static function compareHash($string, $toCompare)
+    {
+        $random = substr($toCompare, 0, 2);
+        $hash = self::toHash($string, $random);
+
+        return ($hash == $toCompare);
+    }
+}
