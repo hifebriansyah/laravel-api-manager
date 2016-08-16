@@ -53,15 +53,7 @@ class User extends MainModel
 
         $model = ($model) ? $model->setHidden($hide) : $model;
 
-        $compare = false;
-
-        if($model){
-            $compare = self::compareHash($password, $model->password);
-        }else{
-            if($model){
-                $compare = true;
-            }
-        }
+        $compare = ($model) ? self::compareHash($password, $model->password) : false;
 
         if($compare){
             request()->session()->put('user', $model->toArray());
@@ -73,6 +65,37 @@ class User extends MainModel
         }
 
         return $model;
+    }
+
+    public function postFbLogin()
+    {
+        $fb_id = request()->input('fb_id');
+        $email = request()->input('email');
+
+        $model = $this->where('email', $email)->whereNull('fb_id')->first();
+
+        if ($model) {
+            $model->fb_id = $fb_id;
+            $model->is_email_validated = 1;
+            $model->last_login_at = TODAY_LABEL;
+            $response = $model->save();
+        } else {
+            if(!$this->where('email', $email)->first() && $email){
+                $this->postNew();
+            }
+        }
+
+        $model = $this->where('email', $email)->where('fb_id', $fb_id)->first();
+
+        if ($model) {
+            request()->session()->put('user', $model->toArray());
+            $model->last_login_at = TODAY_LABEL;
+            $model->auth_token = $this->getUniqueId(md5(NOW), 'auth_token');
+            $model->save();
+        }
+
+        return $model;
+
     }
 
     public function postLogOut()

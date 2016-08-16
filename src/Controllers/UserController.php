@@ -8,9 +8,18 @@ class UserController extends MainController
 {
 	public function postLogIn()
 	{
-		return $this->wrapper(
-			$this->model->postLogIn()
-		);
+		$response['status'] = INVALID_CREDENTIAL;
+		$response['messages'] = "Invalid credentials!";
+
+		$model = request()->has('fb_id')
+			? $this->model->postFbLogIn()
+			: $model = $this->model->postLogIn();		
+
+		if($model){
+			$response = $this->wrapper($model);
+		};
+
+		return $response;
 	}
 
 	public function postLogOut()
