@@ -9,10 +9,10 @@
             "email": "febri.init@gmail.com"
         }
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "MFebriansyah\\LaravelAPIManager\\": "packages/mfebriansyah/laravel-api-manager/src"
+            "MFebriansyah\\LaravelAPIManager\\": "src/"
         }
     }
 }
