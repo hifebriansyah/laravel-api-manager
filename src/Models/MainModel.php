@@ -4,19 +4,25 @@ namespace MFebriansyah\LaravelAPIManager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MainModel extends Model
+abstract class MainModel extends Model
 {
     /*
     |--------------------------------------------------------------------------
     | VARIABLES
     |--------------------------------------------------------------------------
-    */
+    */ 
+    
+    #public
 
-    public $imagesFolder = SERVER.'/embed';
+    public $imagesFolder = 'embed';
 
     public $coverResolutions = [
-        'on_demand' => '/{$1}/{$2}',
+        'on_demand' => '{$1}/{$2}',
     ];
+
+    public $hide = [];
+    public $add = [];
+    public $rules = [];
 
 	/*
     |--------------------------------------------------------------------------
@@ -105,16 +111,16 @@ class MainModel extends Model
     public function getImageAttribute($value, $fieldName = 'image_url')
     {
         if($this->$fieldName){
-            $images['original'] = $this->imagesFolder.'/'.$this->$fieldName.'?index='.INDEX;
+            $images['original'] = url($this->imagesFolder.'/'.$this->$fieldName.'?index='.INDEX);
 
             foreach($this->coverResolutions as $name => $value){
-                $images[$name] = $this->imagesFolder.$value.'/'.$this->$fieldName.'?index='.INDEX;
+                $images[$name] = url($this->imagesFolder.'/'.$value.'/'.$this->$fieldName.'?index='.INDEX);
             }
         }else{
-            $images['original'] = $this->imagesFolder.'/not-found?index='. INDEX;;
+            $images['original'] = url($this->imagesFolder.'/not-found?index='. INDEX);
 
             foreach($this->coverResolutions as $name => $value){
-                $images[$name] = $this->imagesFolder.$value.'/not-found?index='.INDEX;;
+                $images[$name] = url($this->imagesFolder.'/'.$value.'/not-found?index='.INDEX);
             }
         }
 

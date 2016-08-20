@@ -1,8 +1,8 @@
 <?php
 
-namespace MFebriansyah\LaravelAPIManager\Libraries;
+namespace MFebriansyah\LaravelAPIManager\Traits;
 
-class Token
+trait Token
 {
 	public static function create($key = TOKEN_KEY)
 	{

@@ -13,7 +13,7 @@ class LaravelAPIManagerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
+        require dirname(__FILE__).'/config/constants.php';
     }
  
     /**

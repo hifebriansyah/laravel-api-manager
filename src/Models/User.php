@@ -2,6 +2,8 @@
 
 namespace MFebriansyah\LaravelAPIManager\Models;
 
+use MFebriansyah\LaravelAPIManager\Traits\Hash;
+
 class User extends MainModel
 {
     /*
@@ -10,11 +12,10 @@ class User extends MainModel
     |--------------------------------------------------------------------------
     */
 
+    #public
+
     protected $table = 'users';
-    protected $hidden = ['password'];    
-    public $hide = [];
-    public $add = [];
-    public $rules = [];
+    protected $hidden = ['password'];
 
     /*
     |--------------------------------------------------------------------------
@@ -53,11 +54,11 @@ class User extends MainModel
 
         $model = ($model) ? $model->setHidden($hide) : $model;
 
-        $compare = ($model) ? self::compareHash($password, $model->password) : false;
+        $compare = ($model) ? Hash::compareHash($password, $model->password) : false;
 
         if($compare){
             request()->session()->put('user', $model->toArray());
-            $model->last_login_at = TODAY_LABEL;
+            $model->last_login_at = TODAY;
             $model->auth_token = $this->getUniqueId(md5(NOW), 'auth_token');
             $model->save();
         }else{
@@ -77,7 +78,7 @@ class User extends MainModel
         if ($model) {
             $model->fb_id = $fb_id;
             $model->is_email_validated = 1;
-            $model->last_login_at = TODAY_LABEL;
+            $model->last_login_at = TODAY;
             $response = $model->save();
         } else {
             if(!$this->where('email', $email)->first() && $email){
@@ -89,7 +90,7 @@ class User extends MainModel
 
         if ($model) {
             request()->session()->put('user', $model->toArray());
-            $model->last_login_at = TODAY_LABEL;
+            $model->last_login_at = TODAY;
             $model->auth_token = $this->getUniqueId(md5(NOW), 'auth_token');
             $model->save();
         }
@@ -162,24 +163,5 @@ class User extends MainModel
             ->first();
 
         return $user;
-    }
-
-    private static function toHash($string, $random = null)
-    {
-        $random = ($random) ? $random : rand(10, 30);
-        $string = md5($string);
-        $start = md5(substr($string, 0, $random));
-        $end = md5(substr($string, $random, 99));
-        $hash = $random.$start.$end;
-
-        return $hash;
-    }
-
-    private static function compareHash($string, $toCompare)
-    {
-        $random = substr($toCompare, 0, 2);
-        $hash = self::toHash($string, $random);
-
-        return ($hash == $toCompare);
     }
 }

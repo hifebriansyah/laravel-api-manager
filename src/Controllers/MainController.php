@@ -4,7 +4,7 @@ namespace MFebriansyah\LaravelAPIManager\Controllers;
 
 use App\Http\Controllers\Controller;
 
-Class MainController extends Controller
+abstract Class MainController extends Controller
 {
 	/*
     |--------------------------------------------------------------------------
