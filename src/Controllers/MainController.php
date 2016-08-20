@@ -4,9 +4,9 @@ namespace MFebriansyah\LaravelAPIManager\Controllers;
 
 use App\Http\Controllers\Controller;
 
-abstract Class MainController extends Controller
+abstract class MainController extends Controller
 {
-	/*
+    /*
     |--------------------------------------------------------------------------
     | VARIABLES
     |--------------------------------------------------------------------------
@@ -17,94 +17,97 @@ abstract Class MainController extends Controller
      *
      * @var \Illuminate\Database\Eloquent\Model
      */
-	protected $model;
+    protected $model;
 
-	/*
+    /*
     |--------------------------------------------------------------------------
     | REST METHODS
     |--------------------------------------------------------------------------
     */
 
-    #GET
+    // GET
 
     /**
      * Execute getAll function from $model.
      *
      * @return array
      */
-	public function getAll()
-	{
-		return $this->wrapper(
-			$this->model->getAll()
-		);
-	}
+    public function getAll()
+    {
+        return $this->wrapper(
+            $this->model->getAll()
+        );
+    }
 
     /**
      * Execute getOne function from $model.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return array
      */
-	public function getOne($id)
-	{
-		return $this->wrapper(
-			$this->model->getOne($id)
-		);
-	}
+    public function getOne($id)
+    {
+        return $this->wrapper(
+            $this->model->getOne($id)
+        );
+    }
 
-	#POST
+    // POST
 
     /**
      * Execute postNew function from $model.
      *
      * @return array
      */
-	public function postNew()
-	{
-		return $this->wrapper(
-			$this->model->postNew()
-		);
-	}
+    public function postNew()
+    {
+        return $this->wrapper(
+            $this->model->postNew()
+        );
+    }
 
-	#PUT
+    // PUT
 
     /**
      * Execute putUpdate function from $model.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return array
      */
-	public function putUpdate($id)
-	{
-		$model = $this->model->find($id);
+    public function putUpdate($id)
+    {
+        $model = $this->model->find($id);
 
-		if($model){
-			$model = $model->putUpdate();
-		}
+        if ($model) {
+            $model = $model->putUpdate();
+        }
 
-		return $this->wrapper($model);
-	}
+        return $this->wrapper($model);
+    }
 
-	#DELETE
+    // DELETE
 
     /**
      * Execute deleteRecord function from $model.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return array
      */
-	public function deleteRecord($id)
-	{
-		$model = $this->model->select('status_id')->find($id);
+    public function deleteRecord($id)
+    {
+        $model = $this->model->select('status_id')->find($id);
 
-		if($model){
-			$model = $model->deleteRecord();
-		}
+        if ($model) {
+            $model = $model->deleteRecord();
+        }
 
-		return $this->wrapper($model);
-	}
-	
-	/*
+        return $this->wrapper($model);
+    }
+
+    /*
     |--------------------------------------------------------------------------
     | HELPER
     |--------------------------------------------------------------------------
@@ -113,21 +116,21 @@ abstract Class MainController extends Controller
     /**
      * Wrap and format the $model.
      *
-     * @param  \Illuminate\Database\Eloquent\Model $model
+     * @param \Illuminate\Database\Eloquent\Model $model
+     *
      * @return array
      */
-	public function wrapper($model)
-	{
-		$wrapper['status'] = BLANK;
+    public function wrapper($model)
+    {
+        $wrapper['status'] = BLANK;
 
-		if($model){
-			$model = is_array($model) ? $model : $model->toArray();
-			$model = !isset($model[0]) ? $model : ['data' => $model];
-			$wrapper = array_merge($wrapper, $model);
+        if ($model) {
+            $model = is_array($model) ? $model : $model->toArray();
+            $model = !isset($model[0]) ? $model : ['data' => $model];
+            $wrapper = array_merge($wrapper, $model);
+            $wrapper['status'] = !isset($model['errors']) ? SUCCESS : VALIDATION_ERRORS;
+        }
 
-			$wrapper['status'] = !isset($model['errors']) ? SUCCESS : VALIDATION_ERRORS;
-		}
-
-		return $wrapper;
-	}
+        return $wrapper;
+    }
 }

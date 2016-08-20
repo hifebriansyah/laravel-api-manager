@@ -3,13 +3,14 @@
 namespace MFebriansyah\LaravelAPIManager\Traits;
 
 trait Hash
-{    
+{
     /**
      * Hash string.
      *
-     * @param String $string
-     * @param Int $random
-     * @return String
+     * @param string $string
+     * @param int    $random
+     *
+     * @return string
      */
     public static function toHash($string, $random = null)
     {
@@ -25,8 +26,9 @@ trait Hash
     /**
      * Hash string.
      *
-     * @param String $string
-     * @param String $toCompare
+     * @param string $string
+     * @param string $toCompare
+     *
      * @return bool
      */
     public static function compareHash($string, $toCompare)
@@ -34,6 +36,6 @@ trait Hash
         $random = substr($toCompare, 0, 2);
         $hash = self::toHash($string, $random);
 
-        return ($hash == $toCompare);
+        return $hash == $toCompare;
     }
 }

@@ -12,7 +12,7 @@ class User extends MainModel
     |--------------------------------------------------------------------------
     */
 
-    # PROTECTED #
+    // PROTECTED
 
     /**
      * The table name.
@@ -37,27 +37,28 @@ class User extends MainModel
     /**
      * Generate unique id.
      *
-     * @param int $uniqueId
-     * @param String $field
+     * @param int    $uniqueId
+     * @param string $field
+     *
      * @return int
      */
     public function getUniqueId($uniqueId = 0, $field = 'unique_id')
     {
-        if(!$uniqueId){
+        if (!$uniqueId) {
             $count = $this->count();
-            $uniqueId = rand(0, 100).$count.($uniqueId+1).NOW;
+            $uniqueId = rand(0, 100).$count.($uniqueId + 1).NOW;
         }
 
         $model = $this->where($field, $uniqueId)->count();
 
-        if($model > 0){
+        if ($model > 0) {
             $this->getUniqueId($uniqueId);
         }
 
         return $uniqueId;
     }
 
-    # POST #
+    // POST
 
     /**
      * Authenticate user data.
@@ -79,12 +80,12 @@ class User extends MainModel
 
         $compare = ($model) ? Hash::compareHash($password, $model->password) : false;
 
-        if($compare){
+        if ($compare) {
             request()->session()->put('user', $model->toArray());
             $model->last_login_at = TODAY;
             $model->auth_token = $this->getUniqueId(md5(NOW), 'auth_token');
             $model->save();
-        }else{
+        } else {
             $model = null;
         }
 
@@ -109,7 +110,7 @@ class User extends MainModel
             $model->last_login_at = TODAY;
             $response = $model->save();
         } else {
-            if(!$this->where('email', $email)->first() && $email){
+            if (!$this->where('email', $email)->first() && $email) {
                 $this->postNew();
             }
         }
@@ -124,7 +125,6 @@ class User extends MainModel
         }
 
         return $model;
-
     }
 
     /**
@@ -139,8 +139,7 @@ class User extends MainModel
 
         // for client (android and ios)
         if ($auth_token) {
-
-            $member = User::where('auth_token', $auth_token)->first();
+            $member = self::where('auth_token', $auth_token)->first();
 
             if ($member) {
                 $member->auth_token = null;
@@ -149,7 +148,7 @@ class User extends MainModel
         }
 
         // for web version
-        if(request()->session()->has('user')){
+        if (request()->session()->has('user')) {
             $model = $this->find(request()->session()->get('user')['id']);
             $model->auth_token = null;
             $model->save();
@@ -160,7 +159,7 @@ class User extends MainModel
         return $model;
     }
 
-    # LOG #
+    // LOG
 
     /**
      * Get user session data.
@@ -171,7 +170,7 @@ class User extends MainModel
     {
         $model = $this->getAPILogOnData();
 
-        if(!$model) {
+        if (!$model) {
             $model = $this->getHTTPLogOnData();
         }
 
@@ -187,9 +186,9 @@ class User extends MainModel
     {
         $model = null;
 
-        if (request()->session()->has('user')){
+        if (request()->session()->has('user')) {
             $model = request()->session()->get('user');
-            $model = User::find($model['id']);
+            $model = self::find($model['id']);
         }
 
         return $model;
