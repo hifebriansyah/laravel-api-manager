@@ -12,9 +12,20 @@ class User extends MainModel
     |--------------------------------------------------------------------------
     */
 
-    #public
+    # PROTECTED #
 
+    /**
+     * The table name.
+     *
+     * @var string
+     */
     protected $table = 'users';
+
+    /**
+     * All atrributes that will be hidden.
+     *
+     * @var array
+     */
     protected $hidden = ['password'];
 
     /*
@@ -23,6 +34,13 @@ class User extends MainModel
     |--------------------------------------------------------------------------
     */
 
+    /**
+     * Generate unique id.
+     *
+     * @param int $uniqueId
+     * @param String $field
+     * @return int
+     */
     public function getUniqueId($uniqueId = 0, $field = 'unique_id')
     {
         if(!$uniqueId){
@@ -39,8 +57,13 @@ class User extends MainModel
         return $uniqueId;
     }
 
-    #POST
+    # POST #
 
+    /**
+     * Authenticate user data.
+     *
+     * @return \Illuminate\Database\Eloquent\Model|static|null
+     */
     public function postLogIn()
     {
         $username = request()->input('username', request()->input('email'));
@@ -68,6 +91,11 @@ class User extends MainModel
         return $model;
     }
 
+    /**
+     * Authenticate user data by fb id.
+     *
+     * @return \Illuminate\Database\Eloquent\Model|static|null
+     */
     public function postFbLogin()
     {
         $fb_id = request()->input('fb_id');
@@ -99,6 +127,11 @@ class User extends MainModel
 
     }
 
+    /**
+     * Remove user session and auth_token.
+     *
+     * @return \Illuminate\Database\Eloquent\Model|static|null
+     */
     public function postLogOut()
     {
         $model = null;
@@ -127,8 +160,13 @@ class User extends MainModel
         return $model;
     }
 
-    #LOG
+    # LOG #
 
+    /**
+     * Get user session data.
+     *
+     * @return \Illuminate\Database\Eloquent\Model|static|null
+     */
     public function getLogOnData()
     {
         $model = $this->getAPILogOnData();
@@ -140,28 +178,38 @@ class User extends MainModel
         return $model;
     }
 
+    /**
+     * Get user session data.
+     *
+     * @return \Illuminate\Database\Eloquent\Model|static|null
+     */
     private function getHTTPLogOnData()
     {
-        $user = null;
+        $model = null;
 
         if (request()->session()->has('user')){
-            $user = request()->session()->get('user');
-            $user = User::find($user['id']);
+            $model = request()->session()->get('user');
+            $model = User::find($model['id']);
         }
 
-        return $user;
+        return $model;
     }
 
+    /**
+     * Get user data by matching auth-token.
+     *
+     * @return \Illuminate\Database\Eloquent\Model|static|null
+     */
     private function getAPILogOnData()
     {
         $auth_token = request()->header('auth-token');
 
-        $user = $this->where(\DB::raw('(
+        $model = $this->where(\DB::raw('(
                 (username = "'.$auth_token.'" or email = "'.$auth_token.'")
                 or (auth_token = "'.$auth_token.'" and auth_token is not null)
             )'), true)
             ->first();
 
-        return $user;
+        return $model;
     }
 }

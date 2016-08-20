@@ -6,6 +6,11 @@ use MFebriansyah\LaravelAPIManager\Controllers\MainController;
 
 class UserController extends MainController
 {
+    /**
+     * Execute postLogIn function from $model.
+     *
+     * @return array
+     */
 	public function postLogIn()
 	{
 		$response['status'] = INVALID_CREDENTIAL;
@@ -22,6 +27,11 @@ class UserController extends MainController
 		return $response;
 	}
 
+    /**
+     * Execute postLogOut function from $model.
+     *
+     * @return array
+     */
 	public function postLogOut()
 	{
 		return $this->wrapper(
@@ -29,6 +39,11 @@ class UserController extends MainController
 		);
 	}
 
+    /**
+     * Execute postNew function from $model.
+     *
+     * @return array
+     */
 	public function postNew()
 	{
 		return $this->wrapper(

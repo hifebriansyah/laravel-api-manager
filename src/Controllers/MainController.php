@@ -12,6 +12,11 @@ abstract Class MainController extends Controller
     |--------------------------------------------------------------------------
     */
 
+    /**
+     * The model dependency injection container.
+     *
+     * @var \Illuminate\Database\Eloquent\Model
+     */
 	protected $model;
 
 	/*
@@ -22,6 +27,11 @@ abstract Class MainController extends Controller
 
     #GET
 
+    /**
+     * Execute getAll function from $model.
+     *
+     * @return array
+     */
 	public function getAll()
 	{
 		return $this->wrapper(
@@ -29,6 +39,12 @@ abstract Class MainController extends Controller
 		);
 	}
 
+    /**
+     * Execute getOne function from $model.
+     *
+     * @param  int  $id
+     * @return array
+     */
 	public function getOne($id)
 	{
 		return $this->wrapper(
@@ -38,6 +54,11 @@ abstract Class MainController extends Controller
 
 	#POST
 
+    /**
+     * Execute postNew function from $model.
+     *
+     * @return array
+     */
 	public function postNew()
 	{
 		return $this->wrapper(
@@ -47,6 +68,12 @@ abstract Class MainController extends Controller
 
 	#PUT
 
+    /**
+     * Execute putUpdate function from $model.
+     *
+     * @param  int  $id
+     * @return array
+     */
 	public function putUpdate($id)
 	{
 		$model = $this->model->find($id);
@@ -60,6 +87,12 @@ abstract Class MainController extends Controller
 
 	#DELETE
 
+    /**
+     * Execute deleteRecord function from $model.
+     *
+     * @param  int  $id
+     * @return array
+     */
 	public function deleteRecord($id)
 	{
 		$model = $this->model->select('status_id')->find($id);
@@ -77,6 +110,12 @@ abstract Class MainController extends Controller
     |--------------------------------------------------------------------------
     */
 
+    /**
+     * Wrap and format the $model.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model $model
+     * @return array
+     */
 	public function wrapper($model)
 	{
 		$wrapper['status'] = BLANK;
