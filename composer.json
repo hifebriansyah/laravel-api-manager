@@ -1,18 +1,22 @@
 {
-    "name": "hifebriansyah/laravel-api-manager",
-    "description": "API manager for laravel",
-    "type": "library",
-    "keywords": ["laravel"],
-    "authors": [
-        {
-            "name": "Muhammad Febriansyah",
-            "email": "hifebriansyah@gmail.com"
-        }
-    ],
-    "minimum-stability": "dev",
-    "autoload": {
-        "psr-4": {
-            "HiFebriansyah\\LaravelAPIManager\\": "src/"
-        }
+  "name": "hifebriansyah/laravel-api-manager",
+  "description": "API manager for laravel",
+  "type": "library",
+  "keywords": ["laravel"],
+  "license": "MIT",
+  "support": {
+    "issues": "https://github.com/hifebriansyah/laravel-api-manager/issues",
+    "source": "https://github.com/hifebriansyah/laravel-api-manager"
+  },
+  "authors": [
+    {
+      "name": "Muhammad Febriansyah",
+      "email": "hifebriansyah@gmail.com"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "HiFebriansyah\\LaravelAPIManager\\": "src/"
+    }
+  }
 }
