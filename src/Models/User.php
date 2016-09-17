@@ -1,23 +1,37 @@
 <?php
 
-namespace MFebriansyah\LaravelAPIManager\Models;
+/**
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-use MFebriansyah\LaravelAPIManager\Traits\Hash;
+namespace HiFebriansyah\LaravelAPIManager\Models;
 
+use HiFebriansyah\LaravelAPIManager\Traits\Hash;
+
+/**
+ * Main class for User Model.
+ *
+ * @author Muhammad Febriansyah <hifebriansyah@gmail.com>
+ *
+ * @since Class available since Release 1.0.0
+ */
 class User extends MainModel
 {
     /*
     |--------------------------------------------------------------------------
-    | VARIABLES
+    | PROPERTIES
     |--------------------------------------------------------------------------
     */
 
-    // PROTECTED
+    /* PROTECTED */
 
     /**
      * The table name.
      *
      * @var string
+     *
+     * @since Property available since Release 1.0.0
      */
     protected $table = 'users';
 
@@ -25,6 +39,8 @@ class User extends MainModel
      * All atrributes that will be hidden.
      *
      * @var array
+     *
+     * @since Property available since Release 1.0.0
      */
     protected $hidden = ['password'];
 
@@ -37,10 +53,12 @@ class User extends MainModel
     /**
      * Generate unique id.
      *
-     * @param int    $uniqueId
-     * @param string $field
+     * @param int    $uniqueId (optional)
+     * @param string $field    (optional)
      *
      * @return int
+     *
+     * @since Method available since Release 1.0.0
      */
     public function getUniqueId($uniqueId = 0, $field = 'unique_id')
     {
@@ -58,12 +76,14 @@ class User extends MainModel
         return $uniqueId;
     }
 
-    // POST
+    /* POST */
 
     /**
      * Authenticate user data.
      *
      * @return \Illuminate\Database\Eloquent\Model|static|null
+     *
+     * @since Method available since Release 1.0.0
      */
     public function postLogIn()
     {
@@ -96,6 +116,8 @@ class User extends MainModel
      * Authenticate user data by fb id.
      *
      * @return \Illuminate\Database\Eloquent\Model|static|null
+     *
+     * @since Method available since Release 1.0.0
      */
     public function postFbLogin()
     {
@@ -131,6 +153,8 @@ class User extends MainModel
      * Remove user session and auth_token.
      *
      * @return \Illuminate\Database\Eloquent\Model|static|null
+     *
+     * @since Method available since Release 1.0.0
      */
     public function postLogOut()
     {
@@ -165,6 +189,8 @@ class User extends MainModel
      * Get user session data.
      *
      * @return \Illuminate\Database\Eloquent\Model|static|null
+     *
+     * @since Method available since Release 1.0.0
      */
     public function getLogOnData()
     {
@@ -181,6 +207,8 @@ class User extends MainModel
      * Get user session data.
      *
      * @return \Illuminate\Database\Eloquent\Model|static|null
+     *
+     * @since Method available since Release 1.0.0
      */
     private function getHTTPLogOnData()
     {
@@ -198,6 +226,8 @@ class User extends MainModel
      * Get user data by matching auth-token.
      *
      * @return \Illuminate\Database\Eloquent\Model|static|null
+     *
+     * @since Method available since Release 1.0.0
      */
     private function getAPILogOnData()
     {

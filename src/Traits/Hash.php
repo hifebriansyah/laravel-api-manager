@@ -1,16 +1,38 @@
 <?php
 
-namespace MFebriansyah\LaravelAPIManager\Traits;
+/**
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
+namespace HiFebriansyah\LaravelAPIManager\Traits;
+
+/**
+ * Trait responsible to manage hash functionality.
+ *
+ * @author Muhammad Febriansyah <hifebriansyah@gmail.com>
+ *
+ * @since Trait available since Release 1.0.0
+ */
 trait Hash
 {
+    /*
+    |--------------------------------------------------------------------------
+    | METHODS
+    |--------------------------------------------------------------------------
+    */
+
     /**
-     * Hash string.
+     * Convert string to hash.
      *
      * @param string $string
-     * @param int    $random
+     * @param int    $random (optional)
      *
      * @return string
+     *
+     * @todo add salt
+     *
+     * @since Property available since Release 1.0.0
      */
     public static function toHash($string, $random = null)
     {
@@ -24,12 +46,14 @@ trait Hash
     }
 
     /**
-     * Hash string.
+     * Compare string to hash.
      *
      * @param string $string
      * @param string $toCompare
      *
      * @return bool
+     *
+     * @since Property available since Release 1.0.0
      */
     public static function compareHash($string, $toCompare)
     {

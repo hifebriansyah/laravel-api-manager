@@ -1,6 +1,6 @@
 <?php
 
-namespace MFebriansyah\LaravelAPIManager;
+namespace HiFebriansyah\LaravelAPIManager;
 
 use Illuminate\Support\ServiceProvider;
 

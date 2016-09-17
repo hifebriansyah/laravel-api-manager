@@ -1,14 +1,30 @@
 <?php
 
-namespace MFebriansyah\LaravelAPIManager\Controllers;
+/**
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace HiFebriansyah\LaravelAPIManager\Controllers;
 
 use App\Http\Controllers\Controller;
 
+/**
+ * Abstraction for REST API Controller.
+ *
+ * You need to do dependency injection,
+ * from your model class into your REST API controller class,
+ * before calling any of these function.
+ *
+ * @author Muhammad Febriansyah <hifebriansyah@gmail.com>
+ *
+ * @since Abstract Class available since Release 1.0.0
+ */
 abstract class MainController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | VARIABLES
+    | PROPERTIES
     |--------------------------------------------------------------------------
     */
 
@@ -16,21 +32,25 @@ abstract class MainController extends Controller
      * The model dependency injection container.
      *
      * @var \Illuminate\Database\Eloquent\Model
+     *
+     * @since Property available since Release 1.0.0
      */
     protected $model;
 
     /*
     |--------------------------------------------------------------------------
-    | REST METHODS
+    | METHODS
     |--------------------------------------------------------------------------
     */
 
-    // GET
+    /* GET */
 
     /**
-     * Execute getAll function from $model.
+     * Execute getAll method from model class.
      *
      * @return array
+     *
+     * @since Method available since Release 1.0.0
      */
     public function getAll()
     {
@@ -40,11 +60,13 @@ abstract class MainController extends Controller
     }
 
     /**
-     * Execute getOne function from $model.
+     * Execute getOne method from model class.
      *
      * @param int $id
      *
      * @return array
+     *
+     * @since Method available since Release 1.0.0
      */
     public function getOne($id)
     {
@@ -53,12 +75,14 @@ abstract class MainController extends Controller
         );
     }
 
-    // POST
+    /* POST */
 
     /**
-     * Execute postNew function from $model.
+     * Execute postNew method from model class.
      *
      * @return array
+     *
+     * @since Method available since Release 1.0.0
      */
     public function postNew()
     {
@@ -67,14 +91,16 @@ abstract class MainController extends Controller
         );
     }
 
-    // PUT
+    /* PUT */
 
     /**
-     * Execute putUpdate function from $model.
+     * Execute putUpdate method from model class.
      *
      * @param int $id
      *
      * @return array
+     *
+     * @since Method available since Release 1.0.0
      */
     public function putUpdate($id)
     {
@@ -87,14 +113,16 @@ abstract class MainController extends Controller
         return $this->wrapper($model);
     }
 
-    // DELETE
+    /* DELETE */
 
     /**
-     * Execute deleteRecord function from $model.
+     * Execute deleteRecord method from model class.
      *
      * @param int $id
      *
      * @return array
+     *
+     * @since Method available since Release 1.0.0
      */
     public function deleteRecord($id)
     {
@@ -114,11 +142,18 @@ abstract class MainController extends Controller
     */
 
     /**
-     * Wrap and format the $model.
+     * Wrap and format the model result.
+     *
+     * Set status to blank if no result found.
+     * Set status to succsess if result found.
+     * Set status to validation error if errors found.
+     * wrap results with "data" as index if model return is collection.
      *
      * @param \Illuminate\Database\Eloquent\Model $model
      *
      * @return array
+     *
+     * @since Method available since Release 1.0.0
      */
     public function wrapper($model)
     {
@@ -128,7 +163,7 @@ abstract class MainController extends Controller
             $model = is_array($model) ? $model : $model->toArray();
             $model = !isset($model[0]) ? $model : ['data' => $model];
             $wrapper = array_merge($wrapper, $model);
-            $wrapper['status'] = !isset($model['errors']) ? SUCCESS : VALIDATION_ERRORS;
+            $wrapper['status'] = !isset($model['errors']) ? SUCCESS : VALIDATION_ERROR;
         }
 
         return $wrapper;

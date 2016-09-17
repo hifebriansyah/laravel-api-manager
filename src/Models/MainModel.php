@@ -1,23 +1,37 @@
 <?php
 
-namespace MFebriansyah\LaravelAPIManager\Models;
+/**
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace HiFebriansyah\LaravelAPIManager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Abstraction for REST API Model.
+ *
+ * @author Muhammad Febriansyah <hifebriansyah@gmail.com>
+ *
+ * @since Abstract Class available since Release 1.0.0
+ */
 abstract class MainModel extends Model
 {
     /*
     |--------------------------------------------------------------------------
-    | VARIABLES
+    | PROPERTIES
     |--------------------------------------------------------------------------
     */
 
-    // PUBLIC
+    /* PUBLIC */
 
     /**
      * Path of images folder.
      *
      * @var string
+     *
+     * @since Property available since Release 1.0.0
      */
     public $imagesFolder = 'embed';
 
@@ -25,6 +39,8 @@ abstract class MainModel extends Model
      * Images resolutions.
      *
      * @var array
+     *
+     * @since Property available since Release 1.0.0
      */
     public $imageResolutions = [
         'on_demand' => '{$1}/{$2}',
@@ -34,6 +50,8 @@ abstract class MainModel extends Model
      * All atrributes that will be hidden.
      *
      * @var array
+     *
+     * @since Property available since Release 1.0.0
      */
     public $hide = [];
 
@@ -41,6 +59,8 @@ abstract class MainModel extends Model
      * All atrributes that will be added.
      *
      * @var array
+     *
+     * @since Property available since Release 1.0.0
      */
     public $add = [];
 
@@ -48,6 +68,8 @@ abstract class MainModel extends Model
      * Validations rules for model attributes.
      *
      * @var array
+     *
+     * @since Property available since Release 1.0.0
      */
     public $rules = [];
 
@@ -57,12 +79,14 @@ abstract class MainModel extends Model
     |--------------------------------------------------------------------------
     */
 
-    // GET
+    /* GET */
 
     /**
      * Get all records.
      *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
+     *
+     * @since Method available since Release 1.0.0
      */
     public function getAll()
     {
@@ -77,6 +101,8 @@ abstract class MainModel extends Model
      * @param int $id
      *
      * @return \Illuminate\Database\Eloquent\Model|static|null
+     *
+     * @since Method available since Release 1.0.0
      */
     public function getOne($id)
     {
@@ -85,12 +111,14 @@ abstract class MainModel extends Model
             ->one($id);
     }
 
-    // DELETE
+    /* DELETE */
 
     /**
      * Remove record.
      *
      * @return $this
+     *
+     * @since Method available since Release 1.0.0
      */
     public function deleteRecord()
     {
@@ -110,6 +138,8 @@ abstract class MainModel extends Model
      * Set filter and pagination for the query.
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     *
+     * @since Method available since Release 1.0.0
      */
     public function filter()
     {
@@ -131,6 +161,8 @@ abstract class MainModel extends Model
      * @param \Illuminate\Database\Eloquent\Collection $model
      *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
+     *
+     * @since Method available since Release 1.0.0
      */
     public function transform($model)
     {
@@ -151,6 +183,8 @@ abstract class MainModel extends Model
      * @param int $id
      *
      * @return \Illuminate\Database\Eloquent\Model|static|null
+     *
+     * @since Method available since Release 1.0.0
      */
     public function one($id = null)
     {
@@ -176,6 +210,8 @@ abstract class MainModel extends Model
      * @param string $fieldName
      *
      * @return array
+     *
+     * @since Method available since Release 1.0.0
      */
     public function getImageAttribute($value, $fieldName = 'image_url')
     {
@@ -202,6 +238,8 @@ abstract class MainModel extends Model
      * @param int $id
      *
      * @return \Illuminate\Database\Eloquent\Model|static|null
+     *
+     * @since Method available since Release 1.0.0
      */
     public function validSave()
     {
